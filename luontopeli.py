@@ -216,6 +216,8 @@ def quiz():
     if not question_data:
         return redirect(url_for('index'))
 
+    correct_answer = question_data['answer']
+
     if 'ncorrect' not in session: 
         return redirect(url_for('index'))
 
@@ -226,12 +228,8 @@ def quiz():
         if not answer:
             return redirect(url_for('index'))
 
-        correct_answer = question_data["answer"]
         if answer == correct_answer: 
             session['ncorrect'] += 1
-            flash('Oikein!', 'correct')
-        else:
-            flash('Väärin!', 'wrong')
 
         # set the current question to the next number when checked
         session["current_question"] += 1
@@ -263,6 +261,7 @@ def quiz():
                            ncurrent=current_question,
                            ntotal=quiz_types[quiz_type]['amount'],
                            question_urls=question_urls,
+                           correct_answer=correct_answer,
                            options=options)
 
 

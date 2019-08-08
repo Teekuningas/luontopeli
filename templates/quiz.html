@@ -47,10 +47,17 @@
         <div class="quiz" id="quiz" data-toggle="buttons">
         Vastaus: <br />
         {%for option in options%} 
-        <label class="btn btn-lg btn-primary btn-block quiz-option">
-          <input type="radio" name="answer" value="{{option}}">
-          <span class="btn-label">{{option}}</span> 
-        </label>
+          {% if option == correct_answer %}
+            <label class="btn btn-lg btn-primary btn-block quiz-option quiz-correct">
+              <input type="radio" name="answer" value="{{option}}">
+              <span class="btn-label">{{option}}</span> 
+            </label>
+          {% else %}
+            <label class="btn btn-lg btn-primary btn-block quiz-option">
+              <input type="radio" name="answer" value="{{option}}">
+              <span class="btn-label">{{option}}</span> 
+            </label>
+          {% endif %}
         {%endfor%} 
         </div>
       </p>

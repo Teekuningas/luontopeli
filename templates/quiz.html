@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <title>Luontopeli</title>
+  <link rel="shortcut icon" href="#" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+        crossorigin="anonymous">
+  <link rel=stylesheet 
+        type=text/css 
+        href='{{ url_for('static', filename='luontopeli.css') }}'>
+</head>
+<body>
+  <div class="page">
+    <h1>Luontopeli - Kysymys #{{ncurrent}} / {{ntotal}}</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class=flashes>
+        {% for category, message in messages %}
+          {% if category == "correct" %}
+            <div class="alert alert-success" role="alert">
+              {{message}}
+            </div>
+          {% endif %}
+          {% if category == "wrong" %}
+            <div class="alert alert-danger" role="alert">
+              {{message}}
+            </div>
+          {% endif %}
+        {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    <div class="image-container">
+      {% for url in question_urls %}
+      <img id="image_{{loop.index}}" src="{{url}}">
+      {% endfor %}
+    </div>
+    <p>
+      <label class="btn btn-lg btn-secondary btn-block image-btn">
+        Vaihda kuva
+      </label>
+    </p>
+    <form id='quizform' method='post'  >
+      <p>
+        <div class="quiz" id="quiz" data-toggle="buttons">
+        Vastaus: <br />
+        {%for option in options%} 
+        <label class="btn btn-lg btn-primary btn-block quiz-option">
+          <input type="radio" name="answer" value="{{option}}">
+          <span class="btn-label">{{option}}</span> 
+        </label>
+        {%endfor%} 
+        </div>
+      </p>
+    </form>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src='{{ url_for('static', filename='luontopeli.js') }}'></script>
+</body>
+</html>

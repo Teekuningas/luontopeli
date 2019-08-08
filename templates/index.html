@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <title>Luontopeli</title>
+  <link rel="shortcut icon" href="#" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+  <link rel=stylesheet type=text/css href='{{ url_for('static',filename='luontopeli.css') }}'>
+</head>
+<body>
+  <div class=page>
+    <h1>Luontopeli - Aloita</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class=flashes>
+        {% for category, message in messages %}
+          {% if category == "correct" %}
+            <div class="alert alert-success" role="alert">
+              {{message}}
+            </div>
+          {% endif %}
+          {% if category == "wrong" %}
+            <div class="alert alert-danger" role="alert">
+              {{message}}
+            </div>
+          {% endif %}
+        {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    <p>
+      Tunnista eliöitä. Peli noutaa lajitiedot lajitietokeskuksen rajapinnalta.
+    </p>
+    <strong>Valitse peli:</strong>
+    <p>
+      {% for key, struct in info.items() %}
+      <a class="btn btn-lg btn-primary btn-block" href="/quiz?type={{key}}">
+        {{struct['text']}} ({{struct['ncorrect']}} / {{struct['ntotal']}})</a>
+      {% endfor %}
+    </p>
+    <p>
+      <a href="/reset">Nollaa edistyminen</a>
+    </p>
+  </div>
+</body>
+</html>
+

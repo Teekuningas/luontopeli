@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Luontopeli</title>
+  <link rel="shortcut icon" href="#" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+  <link rel=stylesheet type=text/css href='{{ url_for('static',filename='luontopeli.css') }}'>
+</head>
+<body>
+  <div class=page>
+    <h1>Luontopeli - Tulokset</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class=flashes>
+        {% for category, message in messages %}
+          {% if category == "correct" %}
+            <div class="alert alert-success" role="alert">
+              {{message}}
+            </div>
+          {% endif %}
+          {% if category == "wrong" %}
+            <div class="alert alert-danger" role="alert">
+              {{message}}
+            </div>
+          {% endif %}
+        {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% if ncorrect < ntotal %}
+      <strong>Voit vielä parantaa!</strong>
+    {% else %}
+      <strong>Taidat olla aika hyvä tässä.</strong>
+    {% endif %}
+    <p>
+      Oikeita vastauksia: 
+      <span>{{ncorrect}}/{{ntotal}}</span> 
+    </p>
+    <a href="/">Aloita alusta</a>
+  </div>
+</body>
+</html>

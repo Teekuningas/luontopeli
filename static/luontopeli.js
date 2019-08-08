@@ -5,6 +5,10 @@ $(function(){
 
   var visible_idx = 0;
 
+  if (n_images <= 1) {
+      $(".image-btn").hide()
+  }
+
   // click handlers for quiz buttons
   $(".quiz-option").on('click',function () {
     $("#quizform").submit()

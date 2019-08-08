@@ -33,8 +33,8 @@
       {% endif %}
     {% endwith %}
     <div class="image-container">
-      {% for url in question_urls %}
-      <img id="image_{{loop.index}}" src="{{url}}">
+      {% for struct in question_urls %}
+      <img id="image_{{loop.index}}" src="{{struct['url']}}" alt="{{struct['author']}}">
       {% endfor %}
     </div>
     <p>

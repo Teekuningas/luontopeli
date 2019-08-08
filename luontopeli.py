@@ -133,11 +133,16 @@ def get_question(quiz, key=None, reset_cache=False):
                             params=payload)
     
     urls = []
+    already = []
     for idx in range(n_images):
         media = random.sample(json.loads(response.content), 1)[0]
-        urls.append(media['fullURL'])
-
-    urls = list(set(urls))
+        if media['fullURL'] not in already:
+            url = {
+                'url': media['fullURL'],
+                'author': media.get('copyrightOwner', '')
+            }
+            urls.append(url)
+            already.append(media['fullURL'])
 
     question = {
         'answer': answer,
@@ -213,6 +218,7 @@ def quiz():
 
     if 'ncorrect' not in session: 
         return redirect(url_for('index'))
+
 
     # happens when answer is submitted
     if request.method == "POST":

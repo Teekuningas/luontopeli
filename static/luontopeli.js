@@ -11,6 +11,7 @@ $(function(){
 
   // click handlers for quiz buttons
   $(".quiz-option").on('click',function () {
+    this.children[0].checked = true;
     $("#quizform").submit()
   });
 

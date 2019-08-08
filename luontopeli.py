@@ -107,7 +107,7 @@ def get_question(quiz, key=None, reset_cache=False):
     if key:
         idx = [idx for idx in range(len(data)) if data[idx][0] == key][0]
         picked = [data[idx]]
-        picked.extend(random.sample(data[:idx] + data[idx:], 3))
+        picked.extend(random.sample(data[:idx] + data[idx+1:], 3))
     else:
         # dont allow same question to come twice
         while True:
@@ -136,6 +136,8 @@ def get_question(quiz, key=None, reset_cache=False):
     for idx in range(n_images):
         media = random.sample(json.loads(response.content), 1)[0]
         urls.append(media['fullURL'])
+
+    urls = list(set(urls))
 
     question = {
         'answer': answer,

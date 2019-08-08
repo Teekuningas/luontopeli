@@ -1,6 +1,8 @@
 $(function(){
 
-  var n_images = 5;
+  var n_images = $('img').filter(function() { 
+      return this.id.match('image*');}).length
+
   var visible_idx = 0;
 
   // click handlers for quiz buttons

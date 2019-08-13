@@ -3,6 +3,8 @@ import requests
 import json
 import random
 
+from datetime import timedelta
+
 from flask import Flask
 from flask import session
 from flask import render_template
@@ -14,7 +16,12 @@ from flask import flash
 
 app = Flask(__name__)
 app.secret_key = 'SECRET'
+app.permanent_session_lifetime = timedelta(days=365)
 
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
 
 # api_url = 'https://apitest.laji.fi/v0'
 # api_token = 'SKh9kGZNiiRsRjNxa9n3ynOUjNPqJATbzZHtdiboJY9EG7HExpiG39W9UkA0GWop'
@@ -131,11 +138,13 @@ def get_question(quiz, key=None, reset_cache=False):
     }
     response = requests.get('/'.join([api_url, 'taxa', species_id, 'media']), 
                             params=payload)
+    content = json.loads(response.content)
     
+    tryouts = 10
     urls = []
     already = []
-    for idx in range(n_images):
-        media = random.sample(json.loads(response.content), 1)[0]
+    for idx in range(tryouts):
+        media = random.sample(content, 1)[0]
         if media['fullURL'] not in already:
             url = {
                 'url': media['fullURL'],
@@ -143,6 +152,8 @@ def get_question(quiz, key=None, reset_cache=False):
             }
             urls.append(url)
             already.append(media['fullURL'])
+
+    urls = urls[:n_images]
 
     question = {
         'answer': answer,

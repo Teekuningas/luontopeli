@@ -16,21 +16,17 @@ from flask import flash
 
 app = Flask(__name__)
 app.secret_key = 'SECRET'
-app.permanent_session_lifetime = timedelta(days=365)
+app.permanent_session_lifetime = timedelta(days=3650)
 
 
 @app.before_request
 def make_session_permanent():
     session.permanent = True
 
-# api_url = 'https://apitest.laji.fi/v0'
-# api_token = 'SKh9kGZNiiRsRjNxa9n3ynOUjNPqJATbzZHtdiboJY9EG7HExpiG39W9UkA0GWop'
-
 api_url = 'https://api.laji.fi/v0'
 api_token = '4qIvEgc6s13CowXwLd9CbZJPgCoLgEA1z9rX1BNw7a3v7WH2wHiWeZ8AzyASTArd'
 
 n_images = 5
-
 
 quiz_types = {
     'plant_easy': {

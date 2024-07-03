@@ -273,7 +273,9 @@ def quiz():
 
 
 def main():
-    app.run()
+    host = os.environ.get("LUONTOPELI_HOST", "127.0.0.1")
+    port = int(os.environ.get("LUONTOPELI_PORT", "5000"))
+    app.run(host=host, port=port)
 
 
 if __name__ == "__main__":

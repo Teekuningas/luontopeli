@@ -1,18 +1,39 @@
 {
-  inputs.nixpkgs.url = "nixpkgs/22.11";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  description = "A Python development shell for an IRC bot";
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = nixpkgs.legacyPackages.${system};
-      in {
-        formatter = pkgs.nixfmt;
-        devShell = pkgs.mkShell {
-          packages = [
-            (pkgs.python39.withPackages
-              (ps: with ps; [ flask gunicorn requests ]))
-          ];
-        };
-      });
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/24.05";
+
+  outputs = { self, nixpkgs }:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+
+      myPythonEnv = pkgs.python311.withPackages (ps: [
+        ps.flask
+        ps.gunicorn
+        ps.requests
+        ps.black
+      ]);
+
+      luontopeli = pkgs.python311Packages.buildPythonApplication rec {
+        pname = "luontopeli";
+        version = "0.1.0";
+        src = ./.;
+
+        propagatedBuildInputs = [
+          myPythonEnv
+        ];
+
+        buildInputs = with pkgs.python311Packages; [ setuptools ];
+      };
+
+    in
+    {
+      devShell.${system} = pkgs.mkShell {
+        buildInputs = [
+          luontopeli
+        ];
+      };
+      packages.${system}.luontopeli = luontopeli;
+    };
 }
-
